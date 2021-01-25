@@ -1,0 +1,15 @@
+{
+    "name": "moamen/mvc-project",
+    "authors": [
+        {
+            "name": "MoamenKhaledMohamed",
+            "email": "moamen2020khaled@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "require": {}
+}
