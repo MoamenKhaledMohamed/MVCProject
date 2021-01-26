@@ -7,15 +7,21 @@ namespace app\core;
 class Application
 {
     public Router $router;
-    public function __construct()
+    public Request $request;
+    public Response $response;
+    public static string $ROOTPATH;
+
+    public function __construct($rootPath)
     {
-        $this->router = new Router();
+        $this->request = new Request();
+        $this->response = new Response();
+        $this->router = new Router($this->request, $this->response);
+        self::$ROOTPATH = $rootPath;
     }
 
     public function run()
     {
-        // todo
-        $this->router->resolve();
+       echo $this->router->resolve();
     }
 
 }
