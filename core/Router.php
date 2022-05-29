@@ -23,6 +23,11 @@ class Router
         $this->routes['get'][$path] = $callback;
     }
 
+    public function post($path, $callback)
+    {
+        $this->routes['post'][$path] = $callback;
+    }
+
     public function resolve()
     {
         // get path from url without ?
@@ -45,11 +50,16 @@ class Router
            return $this->renderView($callback);
         }
 
-        // execute the function
+        // if callback is an array so create instance from class
+        if(is_array($callback))
+            $callback[0] = new $callback[0];
+
+        // execute the function if it is a real function
+        // or an array contains an instance of class and function.
         return call_user_func($callback);
     }
 
-    private function renderView(string $view)
+    public function renderView(string $view)
     {
         // render layout
         $layout = $this->renderLayout();
@@ -59,6 +69,7 @@ class Router
 
         // replace content with view
         return str_replace('{{content}}', $view, $layout);
+
     }
 
     private function renderLayout()
@@ -66,7 +77,6 @@ class Router
         // store html in buffer
         ob_start();
         include_once Application::$ROOTPATH."/views/layouts/main.php";
-
         // return html and clean the buffer
         return ob_get_clean();
     }
@@ -76,7 +86,6 @@ class Router
         // store html in buffer
         ob_start();
         include_once Application::$ROOTPATH."/views/$view.php";
-
         // return html then clean the buffer
         return ob_get_clean();
     }
