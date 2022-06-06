@@ -11,6 +11,7 @@ class Application
     public Response $response;
     public static Application $app;
     public static string $ROOTPATH;
+    public Controller $controller;
 
     public function __construct($rootPath)
     {

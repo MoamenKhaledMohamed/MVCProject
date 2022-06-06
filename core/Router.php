@@ -34,7 +34,7 @@ class Router
         $path = $this->request->getPath();
 
         // get type of method
-        $method = $this->request->getMethod();
+        $method = $this->request->method();
 
         // return the callback function from array routes
         $callback = $this->routes[$method][$path] ?? false;
@@ -51,21 +51,23 @@ class Router
         }
 
         // if callback is an array so create instance from class
-        if(is_array($callback))
+        if(is_array($callback)){
             $callback[0] = new $callback[0];
+            Application::$app->controller = $callback[0];
+        }
 
         // execute the function if it is a real function
         // or an array contains an instance of class and function.
-        return call_user_func($callback);
+        return call_user_func($callback, $this->request);
     }
 
-    public function renderView(string $view)
+    public function renderView(string $view, array $params = [])
     {
         // render layout
         $layout = $this->renderLayout();
 
         // render view
-        $view = $this->renderOnlyView($view);
+        $view = $this->renderOnlyView($view, $params);
 
         // replace content with view
         return str_replace('{{content}}', $view, $layout);
@@ -74,15 +76,21 @@ class Router
 
     private function renderLayout()
     {
+        $layout = Application::$app->controller->layout;
         // store html in buffer
         ob_start();
-        include_once Application::$ROOTPATH."/views/layouts/main.php";
+        include_once Application::$ROOTPATH."/views/layouts/$layout.php";
         // return html and clean the buffer
         return ob_get_clean();
     }
 
-    private function renderOnlyView($view)
+    private function renderOnlyView($view, $params)
     {
+//        $name = null;
+        foreach ($params as $key => $param){
+            $$key = $param;
+
+        }
         // store html in buffer
         ob_start();
         include_once Application::$ROOTPATH."/views/$view.php";

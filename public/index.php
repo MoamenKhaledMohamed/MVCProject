@@ -1,13 +1,19 @@
 <?php
 
 require_once __DIR__."/../vendor/autoload.php";
+
+use app\controllers\AuthController;
 use app\core\Application;
 use app\controllers\SiteController;
 
 $app = new Application(dirname(__DIR__));
-$app->router->get('/home', 'home');
-$app->router->get('/', function(){
-    return "Hello From Function";
-});
-//$app->router->get('/home', [SiteController::class, 'home']);
+$app->router->get('/', [SiteController::class, 'home']);
+
+$app->router->get('/login', [AuthController::class, 'login']);
+$app->router->post('/login', [AuthController::class, 'handleLoginData']);
+
+$app->router->get('/register', [AuthController::class, 'register']);
+$app->router->post('/register', [AuthController::class, 'handleRegisterData']);
+
 $app->run();
+//phpinfo();

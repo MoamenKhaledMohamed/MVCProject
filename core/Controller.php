@@ -6,8 +6,14 @@ namespace app\core;
 
 class Controller
 {
-    protected function render($view)
+    public string $layout = "main";
+
+    public function setLayout(string $layout)
     {
-      return Application::$app->router->renderView($view);
+       $this->layout = $layout;
+    }
+    protected function render($view, $params = [])
+    {
+      return Application::$app->router->renderView($view, $params);
     }
 }
