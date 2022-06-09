@@ -86,7 +86,6 @@ class Router
 
     private function renderOnlyView($view, $params)
     {
-//        $name = null;
         foreach ($params as $key => $param){
             $$key = $param;
 
