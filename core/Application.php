@@ -9,15 +9,17 @@ class Application
     public Router $router;
     public Request $request;
     public Response $response;
+    public DataBase $db;
     public static Application $app;
     public static string $ROOTPATH;
     public Controller $controller;
 
-    public function __construct($rootPath)
+    public function __construct(string $rootPath, array $config)
     {
         $this->request = new Request();
         $this->response = new Response();
         $this->router = new Router($this->request, $this->response);
+        $this->db = new DataBase($config['db']);
         self::$ROOTPATH = $rootPath;
         self::$app = $this;
     }
