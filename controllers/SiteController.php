@@ -16,6 +16,5 @@ class SiteController extends Controller
            "name" => "User"
         ];
        return $this->render('home', $params);
-//        return phpinfo();
     }
 }

@@ -27,7 +27,8 @@ class Field
         <label for="full_name" class="form-label">%s</label>
         <input type="%s" class="form-control %s" id="fullName" name="%s" value="%s">
         </div><label class="is-invalid">%s</label>',
-        $this->attribute, $this->type,
+        $this->model->getLabels($this->attribute),
+            $this->type,
             $this->model->hasError($this->attribute) ? 'is-invalid' : '',
             $this->attribute,
             $this->model->{$this->attribute},

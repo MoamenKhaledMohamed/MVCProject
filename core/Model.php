@@ -9,6 +9,7 @@ abstract class Model
     public const RULE_MIN = 'min';
     public const RULE_MAX = 'max';
     public const RULE_MATCH = 'match';
+    public const RULE_UNIQUE = 'unique';
     public array $errors = [];
 
     public function loadData($data)
@@ -22,6 +23,13 @@ abstract class Model
     }
 
     public abstract function rules() : array;
+
+    public abstract  function labels() : array;
+
+    public function getLabels($attribute)
+    {
+        return $this->labels()[$attribute] ?? $attribute;
+    }
 
     public function validate(): bool
     {
@@ -39,8 +47,22 @@ abstract class Model
                     $this->addError($ruleName, $attribute, $rule);
                 if($ruleName === self::RULE_MAX && strlen($property) > $rule['max'])
                     $this->addError($ruleName, $attribute, $rule);
-                if($ruleName === self::RULE_MATCH && $property !== $this->{$rule['match']})
+                if($ruleName === self::RULE_MATCH && $property !== $this->{$rule['match']}){
+                    $rule['match'] = $this->getLabels($rule['match']);
                     $this->addError($ruleName, $attribute, $rule);
+                }
+                if($ruleName === self::RULE_UNIQUE) {
+                    $className = $rule['class'];
+                    $uniqueAttribute = $rule['attribute'] ?? $attribute;
+                    $tableName = $className::tableName();
+                    $sql = "SELECT * FROM $tableName WHERE $uniqueAttribute = :$uniqueAttribute";
+                    $stmt = Application::$app->db->prepare($sql);
+                    $stmt->bindValue($uniqueAttribute, $property);
+                    $stmt->execute();
+                    $result = $stmt->fetchObject();
+                    if($result)
+                        $this->addError($ruleName, $attribute, ['field' => $this->getLabels($attribute)]);
+                }
             }
         }
         return empty($this->errors);
@@ -61,7 +83,8 @@ abstract class Model
             self::RULE_EMAIL => "The Email is not valid",
             self::RULE_MIN => "The Filed must greater then {min}",
             self::RULE_MAX => "The Filed must less then {max}",
-            self::RULE_MATCH => "The Filed must same {match}"
+            self::RULE_MATCH => "The Filed must same {match}",
+            self::RULE_UNIQUE => "The {field} is already exits",
         ];
     }
 

@@ -5,7 +5,7 @@ use PDO;
 
 class DataBase
 {
-    private \PDO $pdo;
+    public \PDO $pdo;
 
     public function __construct(array $config)
     {
@@ -16,6 +16,11 @@ class DataBase
         $this->pdo = new PDO($dsn, $user, $password);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    }
+
+    public function prepare($sql)
+    {
+        return $this->pdo->prepare($sql);
     }
 
     public function applyMigrations()

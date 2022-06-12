@@ -29,6 +29,11 @@
         </ul>
     </div>
 </nav>
+<?php if(\app\core\Application::$app->session->getFlash('success')): ?>
+    <div class="alert alert-success" role="alert">
+     <?php echo \app\core\Application::$app->session->getFlash('success');?>
+    </div>
+<?php endif;?>
 <div class="container">{{content}}</div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
