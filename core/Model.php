@@ -40,16 +40,16 @@ abstract class Model
                 if(is_array($rule))
                     $ruleName = $rule[0];
                 if($ruleName === self::RULE_REQUIRE && !$property)
-                    $this->addError($ruleName, $attribute);
+                    $this->addErrorWithRule($ruleName, $attribute);
                 if($ruleName === self::RULE_EMAIL && !filter_var($property, FILTER_VALIDATE_EMAIL))
-                    $this->addError($ruleName, $attribute);
+                    $this->addErrorWithRule($ruleName, $attribute);
                 if($ruleName === self::RULE_MIN && strlen($property) < $rule['min'])
-                    $this->addError($ruleName, $attribute, $rule);
+                    $this->addErrorWithRule($ruleName, $attribute, $rule);
                 if($ruleName === self::RULE_MAX && strlen($property) > $rule['max'])
-                    $this->addError($ruleName, $attribute, $rule);
+                    $this->addErrorWithRule($ruleName, $attribute, $rule);
                 if($ruleName === self::RULE_MATCH && $property !== $this->{$rule['match']}){
                     $rule['match'] = $this->getLabels($rule['match']);
-                    $this->addError($ruleName, $attribute, $rule);
+                    $this->addErrorWithRule($ruleName, $attribute, $rule);
                 }
                 if($ruleName === self::RULE_UNIQUE) {
                     $className = $rule['class'];
@@ -61,14 +61,14 @@ abstract class Model
                     $stmt->execute();
                     $result = $stmt->fetchObject();
                     if($result)
-                        $this->addError($ruleName, $attribute, ['field' => $this->getLabels($attribute)]);
+                        $this->addErrorWithRule($ruleName, $attribute, ['field' => $this->getLabels($attribute)]);
                 }
             }
         }
         return empty($this->errors);
     }
 
-    public function addError(string $ruleName, string $attribute, array $params = [])
+    public function addErrorWithRule(string $ruleName, string $attribute, array $params = [])
     {
         $message = $this->getMessageError()[$ruleName];
         foreach ($params as $key => $value)
@@ -76,6 +76,10 @@ abstract class Model
         $this->errors[$attribute][] = $message;
     }
 
+    public function addError(string $attribute, string $message)
+    {
+       $this->errors[$attribute][] = $message;
+    }
     public function getMessageError(): array
     {
         return [

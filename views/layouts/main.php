@@ -1,3 +1,4 @@
+<?php use app\core\Application;?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -16,7 +17,7 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
+<?php if(Application::$app->isGuest()):?>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
@@ -28,10 +29,22 @@
 
         </ul>
     </div>
+
+<?php else:?>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">logout, <?php echo Application::$app->user->displayName();?></a>
+            </li>
+
+        </ul>
+    </div>
+<?php endif; ?>
 </nav>
-<?php if(\app\core\Application::$app->session->getFlash('success')): ?>
+<?php if(Application::$app->session->getFlash('success')): ?>
     <div class="alert alert-success" role="alert">
-     <?php echo \app\core\Application::$app->session->getFlash('success');?>
+     <?php echo Application::$app->session->getFlash('success');?>
     </div>
 <?php endif;?>
 <div class="container">{{content}}</div>

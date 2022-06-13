@@ -1,8 +1,9 @@
 <?php
 namespace app\models;
 use app\core\DbModel;
+use app\core\UserModel;
 
-class User extends DbModel
+class User extends UserModel
 {
     private const STATUS_INACTIVE = 0;
     private const STATUS_DELETED = 1;
@@ -58,5 +59,17 @@ class User extends DbModel
             'password' => 'Password',
             'confirm_password' => 'Confirm Password',
         ];
+    }
+
+    function getPrimaryKey(): string
+    {
+        // TODO: Implement getPrimaryKey() method.
+        return 'id';
+    }
+
+    public function displayName(): string
+    {
+        // TODO: Implement displayName() method.
+        return $this->full_name;
     }
 }

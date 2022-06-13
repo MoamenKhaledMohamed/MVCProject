@@ -58,7 +58,7 @@ class Router
 
         // execute the function if it is a real function
         // or an array contains an instance of class and function.
-        return call_user_func($callback, $this->request);
+        return call_user_func($callback, $this->request,  $this->response);
     }
 
     public function renderView(string $view, array $params = [])
