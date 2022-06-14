@@ -9,16 +9,18 @@ use app\models\User;
 
 class Application
 {
+    public string $layout = 'auth';
     public Router $router;
     public Request $request;
     public Response $response;
     public DataBase $db;
     public Session $session;
     public ?DbModel $user;
+    public string $action;
     private string $className;
     public static Application $app;
     public static string $ROOTPATH;
-    public Controller $controller;
+    public ?Controller $controller = null;
 
     public function __construct(string $rootPath, array $config)
     {
@@ -44,7 +46,12 @@ class Application
 
     public function run()
     {
-       echo $this->router->resolve();
+        try{
+            echo $this->router->resolve();
+        }catch (\Exception $exception){
+             $this->response->setStatusCode($exception->getCode());
+             echo $this->router->renderView('errors', ['exception' => $exception]);
+        }
     }
 
     public function login(DbModel $user): bool

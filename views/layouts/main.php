@@ -33,6 +33,9 @@
 <?php else:?>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/profile">Go To My Profile <?php echo Application::$app->user->displayName();?></a>
+            </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="/logout">logout, <?php echo Application::$app->user->displayName();?></a>
@@ -55,3 +58,5 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
+
+

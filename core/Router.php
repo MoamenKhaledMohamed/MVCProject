@@ -5,6 +5,8 @@ namespace app\core;
 
 
 
+use app\core\exceptions\NotFoundException;
+
 class Router
 {
     public Request $request;
@@ -28,6 +30,9 @@ class Router
         $this->routes['post'][$path] = $callback;
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function resolve()
     {
         // get path from url without ?
@@ -41,7 +46,7 @@ class Router
         if($callback === false){
             // make the status code is 404
             $this->response->setStatusCode(404);
-           return $this->renderView('_404');
+            throw new NotFoundException();
         }
 
         // check view or function
@@ -54,6 +59,9 @@ class Router
         if(is_array($callback)){
             $callback[0] = new $callback[0];
             Application::$app->controller = $callback[0];
+            Application::$app->action = $callback[1];
+            foreach (Application::$app->controller->getMiddleWares() as $middleWare)
+                $middleWare->execute();
         }
 
         // execute the function if it is a real function
@@ -76,7 +84,9 @@ class Router
 
     private function renderLayout()
     {
-        $layout = Application::$app->controller->layout;
+        $layout = Application::$app->layout;
+        if(Application::$app->controller)
+            $layout = Application::$app->controller->layout;
         // store html in buffer
         ob_start();
         include_once Application::$ROOTPATH."/views/layouts/$layout.php";
