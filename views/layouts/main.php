@@ -1,4 +1,8 @@
-<?php use app\core\Application;?>
+<?php use app\core\Application
+    /**
+     * @var $this \app\core\View
+     */
+    ;?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,7 +13,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>MvcProject</title>
+    <title><?php echo $this->title;?></title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -17,8 +21,9 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-<?php if(Application::$app->isGuest()):?>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+<?php if(Application::$app->isGuest()):?>
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="/register">Register<span class="sr-only">(current)</span></a>
@@ -28,10 +33,7 @@
             </li>
 
         </ul>
-    </div>
-
 <?php else:?>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/profile">Go To My Profile <?php echo Application::$app->user->displayName();?></a>
@@ -42,8 +44,14 @@
             </li>
 
         </ul>
-    </div>
 <?php endif; ?>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/contact">Contact</a>
+            </li>
+
+        </ul>
+    </div>
 </nav>
 <?php if(Application::$app->session->getFlash('success')): ?>
     <div class="alert alert-success" role="alert">

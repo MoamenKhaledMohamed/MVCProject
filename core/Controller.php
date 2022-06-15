@@ -22,7 +22,7 @@ class Controller
 
     protected function render($view, $params = [])
     {
-      return Application::$app->router->renderView($view, $params);
+      return Application::$app->view->renderView($view, $params);
     }
 
     protected function registerMiddleWares(BaseMiddleWare $middleWare)

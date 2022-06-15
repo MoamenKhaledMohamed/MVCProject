@@ -1,3 +1,7 @@
+<?php
+    /**
+     * @var $this \app\core\View
+     */?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,7 +12,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <title>MvcProject</title>
+    <title><?php echo $this->title;?></title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -24,6 +28,12 @@
             </li>
 
         </ul>
+<!--        <ul class="navbar-nav mr-auto">-->
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" href="/contact">Contact</a>-->
+<!--            </li>-->
+<!---->
+<!--        </ul>-->
     </div>
 </nav>
 <div class="container">{{content}}</div>

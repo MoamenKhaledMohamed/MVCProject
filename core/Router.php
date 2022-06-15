@@ -11,14 +11,13 @@ class Router
 {
     public Request $request;
     public Response $response;
+    protected array $routes = [];
 
     public function __construct(Request $request, Response $response)
     {
         $this->request = $request;
         $this->response = $response;
     }
-
-    protected array $routes = [];
 
     public function get($path, $callback)
     {
@@ -52,7 +51,7 @@ class Router
         // check view or function
         if(is_string($callback)){
             // render the view
-           return $this->renderView($callback);
+           return Application::$app->view->renderView($callback);
         }
 
         // if callback is an array so create instance from class
@@ -69,42 +68,5 @@ class Router
         return call_user_func($callback, $this->request,  $this->response);
     }
 
-    public function renderView(string $view, array $params = [])
-    {
-        // render layout
-        $layout = $this->renderLayout();
-
-        // render view
-        $view = $this->renderOnlyView($view, $params);
-
-        // replace content with view
-        return str_replace('{{content}}', $view, $layout);
-
-    }
-
-    private function renderLayout()
-    {
-        $layout = Application::$app->layout;
-        if(Application::$app->controller)
-            $layout = Application::$app->controller->layout;
-        // store html in buffer
-        ob_start();
-        include_once Application::$ROOTPATH."/views/layouts/$layout.php";
-        // return html and clean the buffer
-        return ob_get_clean();
-    }
-
-    private function renderOnlyView($view, $params)
-    {
-        foreach ($params as $key => $param){
-            $$key = $param;
-
-        }
-        // store html in buffer
-        ob_start();
-        include_once Application::$ROOTPATH."/views/$view.php";
-        // return html then clean the buffer
-        return ob_get_clean();
-    }
 
 }

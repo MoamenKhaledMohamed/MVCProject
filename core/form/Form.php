@@ -16,8 +16,13 @@ class Form
         return '</form>';
     }
 
-    public function field($model, $attribute): Field
+    public function inputField($model, $attribute): InputField
     {
-       return new Field($model, $attribute);
+       return new InputField($model, $attribute);
+    }
+
+    public function textAreaField($model, $attribute): TextAreaField
+    {
+        return new TextAreaField($model, $attribute);
     }
 }

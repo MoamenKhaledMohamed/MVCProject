@@ -1,11 +1,17 @@
-<form action="" method="post">
-    <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" name="email" class="form-control" id="exampleInputEmail1">
+<?php
+/**
+ * @var $this \app\core\View
+ * @var $model \app\models\ContactForm
+ */
+$this->title = 'Contact Page';
+?>
+<?php $form = \app\core\form\Form::begin('/contact', 'post')?>
+    <!--create My Form by PHP-->
+
+<?php echo $form->inputField($model, 'subject')?>
+<?php echo $form->inputField($model, 'email')?>
+<?php echo $form->textAreaField($model, 'body')?>
+    <div class="col-6">
+        <button type="submit" class="btn btn-primary">Register</button>
     </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Subject</label>
-        <input type="text" name="subject" class="form-control" id="exampleInputPassword1">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<?php echo \app\core\form\Form::end()?>
